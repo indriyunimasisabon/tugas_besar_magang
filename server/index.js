@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/', userRoutes)
 
 const startServer = async () => {
     try {

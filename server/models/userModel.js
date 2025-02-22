@@ -29,9 +29,12 @@ const User = database.define(
         allowNull: false
     },
     role: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 0,
+        validate: {
+            isIn: [[0, 1, 2]]
+        }
     },
     phone: {
         type: DataTypes.STRING,
@@ -47,16 +50,23 @@ const User = database.define(
     }
 }, {
     freezeTableName: true,
+    timestamps: true,
     hooks: {
         beforeCreate: async (user) => {
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(user.password, salt);
+        },
+        beforeUpdate: async (user) => {
+            if (user.changed("password")) {
+                const salt = await bcrypt.genSalt(10);
+                user.password = await bcrypt.hash(user.password, salt);
+            }
         }
     }
 });
 
 User.prototype.comparePassword = function (password) {
-    return bcrypt.compare(password, this.hashedPassword);
+    return bcrypt.compare(password, this.password);
 };
 
 export default User;
