@@ -34,16 +34,12 @@ const navItems: NavItem[] = [
     path: "/profile",
   },
   {
-    name: "Register",
+    name: "User",
     icon: <ListIcon />,
     path: "/signup",
-  },
-  {
-    name: "Pages",
-    icon: <PageIcon />,
     subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
+      { name: "Register", path: "/signup", pro: false },
+      { name: "list User", path: "/basic-tables", pro: false },
     ],
   },
 ];
