@@ -7,7 +7,7 @@ export default function SignIn() {
     <>
       <PageMeta
         title="Pixel-Patrol | SignIn"
-        description="This is React.js SignIn Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        description=""
       />
       <AuthLayout>
         <SignInForm />
