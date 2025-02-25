@@ -8,7 +8,6 @@ import {
   GridIcon,
   HorizontaLDots,
   ListIcon,
-  PageIcon,
   PlugInIcon,
   UserCircleIcon,
 } from "../icons";
@@ -20,6 +19,7 @@ type NavItem = {
   icon: React.ReactNode;
   path?: string;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  requiredRole?: string;
 };
 
 const navItems: NavItem[] = [
@@ -33,10 +33,12 @@ const navItems: NavItem[] = [
     name: "User Profile",
     path: "/profile",
   },
+  
   {
     name: "User",
     icon: <ListIcon />,
     path: "/signup",
+    requiredRole: '1',
     subItems: [
       { name: "Register", path: "/signup", pro: false },
       { name: "list User", path: "/basic-tables", pro: false },
@@ -45,27 +47,8 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: <BoxCubeIcon />,
-    name: "UI Elements",
-    subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
-    ],
-  },
-  {
-    icon: <PlugInIcon />,
-    name: "Authentication",
-    subItems: [
-      { name: "Sign In", path: "/", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
-    ],
-  },
+  
+  
 ];
 
 const AppSidebar: React.FC = () => {
@@ -86,6 +69,16 @@ const AppSidebar: React.FC = () => {
     (path: string) => location.pathname === path,
     [location.pathname]
   );
+
+  const userRole = localStorage.getItem("userRole");
+
+
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.requiredRole) {
+      return userRole === item.requiredRole;
+    }
+    return true;
+  });
 
   useEffect(() => {
     let submenuMatched = false;
@@ -299,10 +292,6 @@ const AppSidebar: React.FC = () => {
             </>
           ) : (
             <img
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
             />
           )}
         </Link>
@@ -324,23 +313,7 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots className="size-6" />
                 )}
               </h2>
-              {renderMenuItems(navItems, "main")}
-            </div>
-            <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
+              {renderMenuItems(filteredNavItems, "main")}
             </div>
           </div>
         </nav>

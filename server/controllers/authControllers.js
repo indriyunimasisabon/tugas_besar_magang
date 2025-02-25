@@ -80,7 +80,7 @@ export const LoginUser = asyncHandler(async (req, res) => {
     return res.status(200).json({
         msg: "Login berhasil",
         accessToken,
-        user: { id: user.id, name: user.name, email: user.email }
+        user: { id: user.id, name: user.name, email: user.emai, role: user.role }
     });
 
 });
